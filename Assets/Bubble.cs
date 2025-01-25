@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using Random = System.Random;
@@ -7,7 +8,7 @@ using Random = System.Random;
 public class Bubble : MonoBehaviour
 {
     private Rigidbody2D rb;
-    
+    public bool IsDestroyed;
     [SerializeField] private Collider2D liquidArea;    
     private SpriteRenderer _spriteRenderer;
     private Transform _transform;
@@ -15,20 +16,23 @@ public class Bubble : MonoBehaviour
     private bool _hasReachedHorizon;
     private float _gravity;
     private float _size;
-    private int _mass;
+    private float _mass;
     private Collider2D _collider;
     public Guid _bubbleId;
     public Container container;
     public ScoreManager scoreManager;
+    public MMF_Player _feedbackPlayer;
     // private Level
     
     private void Awake()
     {
+        IsDestroyed = false;
         liquidArea = GameObject.Find("PlayZone").GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         _transform = GetComponent<Transform>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _mass = Config.Instance.MASS.Item2;
+        _mass = scoreManager.Level.mass;
+        Debug.Log(scoreManager.Level.mass);
         _color = Config.Instance.colors[new Random().Next(0, Config.Instance.colors.Count)];
         _hasReachedHorizon = false;
         _gravity = UnityEngine.Random.Range(Config.Instance.GRAVITY_RANGE.Item1, Config.Instance.GRAVITY_RANGE.Item2);
@@ -89,7 +93,7 @@ public class Bubble : MonoBehaviour
         if (!_hasReachedHorizon)
         {
             scoreManager.AddScore(Config.Instance.SCORE_FOR_POPPED_BELOW_HORIZON);
-            Destroy(gameObject);
+            DestroyBubble(0.15f);
         }
     }
 
@@ -98,7 +102,7 @@ public class Bubble : MonoBehaviour
         if (other == liquidArea)
         {
             rb.gravityScale = _gravity;
-            rb.mass = Config.Instance.MASS.Item2;
+            rb.mass = _mass;
         }
     }
 
@@ -149,5 +153,13 @@ public class Bubble : MonoBehaviour
             container.DeleteBubbles(collidingSameColorBubbles);
             scoreManager.IncreaseMultiplier(this.gameObject.transform.position);
         }  
+    }
+
+    public void DestroyBubble(float destroyDelay)
+    {
+        if(IsDestroyed) return;
+        IsDestroyed = true;
+        _feedbackPlayer.PlayFeedbacks();
+        Destroy(gameObject, destroyDelay);
     }
 }

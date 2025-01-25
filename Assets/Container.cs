@@ -4,6 +4,7 @@ using UnityEngine;
 public class Container : MonoBehaviour
 {
     [SerializeField] private Transform bubbleTransform;
+    [SerializeField] private ScoreManager _scoreManager;
     private float elapsedTime = 0f;
     private Bubble bubble;
     void Start()
@@ -16,12 +17,13 @@ public class Container : MonoBehaviour
         // Spawn bubbles
         elapsedTime += Time.deltaTime;
 
-        if (elapsedTime >= Config.Instance.SPAWN_ELAPSED_TIME_INTERVAL)
+        if (elapsedTime >= _scoreManager.Level.spawnInterval)
         {
             elapsedTime = 0f;
             int randomInt = Random.Range(0, 100);
 
-            if (randomInt < Config.Instance.SPAWN_CHANCE)
+            Debug.Log(_scoreManager.Level);
+            if (randomInt < _scoreManager.Level.spawnChance)
             {
                 bubble.container = this;
                 var newBubble = Instantiate(bubbleTransform, Vector3.zero, Quaternion.identity);
@@ -59,7 +61,7 @@ public class Container : MonoBehaviour
     {
         foreach (var bubble in bubbles)
         {
-            Destroy(bubble.gameObject);
+            bubble.DestroyBubble(0.3f);
         }
     }
 }

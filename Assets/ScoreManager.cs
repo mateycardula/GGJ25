@@ -8,8 +8,8 @@ public class ScoreManager : MonoBehaviour
     public float multiplier;
     public Bubble bubble;
     public float multiplierTimer;
-    public float spawnInterval;
     public float levelTimer;
+    public Level Level;
     void Awake()
     {
         bubble.scoreManager = this;
@@ -19,8 +19,8 @@ public class ScoreManager : MonoBehaviour
         multiplier = Config.Instance.STARTING_MULTIPLIER;
         score = 0;
         multiplierTimer = 0f;
-        spawnInterval = Config.Instance.SPAWN_ELAPSED_TIME_INTERVAL;
         levelTimer = Config.Instance.LEVEL_TIMER;
+        Level = Config.Instance.LEVELS[0];
     }
 
     void Update()
@@ -57,7 +57,12 @@ public class ScoreManager : MonoBehaviour
 
     private void IncreaseLevel()
     {
-        spawnInterval = (float) Math.Max(spawnInterval - 0.1, 0.1);
+        if (Level.level == Config.Instance.MAX_LEVELS)
+        {
+            return;
+        }
+        
+        Level = Config.Instance.LEVELS[Level.level];
     }
 
     public void AddScore(int points)

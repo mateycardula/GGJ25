@@ -1381,7 +1381,6 @@ MonoBehaviour:
   multiplier: 0
   bubble: {fileID: 6155259007860980399, guid: 15d2d2520b46b4b14b5d2e1f768a8652, type: 3}
   multiplierTimer: 0
-  spawnInterval: 0
   levelTimer: 0
 --- !u!4 &868078569
 Transform:
@@ -1427,7 +1426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ded3a6774203447fb6d7a6816c94fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SPAWN_CHANCE: 100
+  SPAWN_CHANCE: 50
   HORIZON_GRAVITY: 0.3
   LEFT_SPAWN_LIMIT: {fileID: 1457800228}
   RIGHT_SPAWN_LIMIT: {fileID: 1122476091}
@@ -1444,7 +1443,8 @@ MonoBehaviour:
   SCORE_FOR_POPPED_BELOW_HORIZON: 1
   MULTIPLIER_TIMER: 5
   MULTIPLIER_INCREASE: 1.2
-  LEVEL_TIMER: 5
+  LEVEL_TIMER: 30
+  MAX_LEVELS: 3
 --- !u!4 &998629123
 Transform:
   m_ObjectHideFlags: 0
@@ -7001,6 +7001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bubbleTransform: {fileID: 3525273486145952268, guid: 15d2d2520b46b4b14b5d2e1f768a8652, type: 3}
+  _scoreManager: {fileID: 868078568}
 --- !u!1 &1567441139
 GameObject:
   m_ObjectHideFlags: 0
