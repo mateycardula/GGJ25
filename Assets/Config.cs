@@ -15,6 +15,12 @@ public class Config : MonoBehaviour
     public Transform LEFT_SPAWN_LIMIT, RIGHT_SPAWN_LIMIT;
     public List<Color> colors = new List<Color>();
     public int NUMBER_OF_COLLISIONS_TO_POP = 3;
+    public float SPAWN_ELAPSED_TIME_INTERVAL = 0.5f;
+    public float STARTING_MULTIPLIER = 1f;
+    public int SCORE_FOR_POPPED_ABOVE_HORIZON = 1;
+    public int SCORE_FOR_POPPED_BELOW_HORIZON = 1;
+    public float MULTIPLIER_TIMER = 5f;
+    public float MULTIPLIER_INCREASE = 1.2f;
     
     private static Config  s_Instance;
     public static Config Instance

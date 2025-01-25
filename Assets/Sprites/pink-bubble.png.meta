@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      pink-bubble_0: 8938995628748480047
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

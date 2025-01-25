@@ -16,7 +16,7 @@ public class Container : MonoBehaviour
         // Spawn bubbles
         elapsedTime += Time.deltaTime;
 
-        if (elapsedTime >= 1f)
+        if (elapsedTime >= Config.Instance.SPAWN_ELAPSED_TIME_INTERVAL)
         {
             elapsedTime = 0f;
             int randomInt = Random.Range(0, 100);
@@ -36,21 +36,11 @@ public class Container : MonoBehaviour
 
             if (hit.collider)
             {
-                Debug.DrawLine(mousePosition, mousePosition + Vector3.zero, UnityEngine.Color.green, 2f);
-                Debug.Log($"Hit: {hit.collider.gameObject.name}"); // Log hit object name
-
-                // Check if the hit object has the "Bubble" tag
                 if (hit.collider.CompareTag("Bubble"))
                 {
-                    // Call the bubble's destroy method
                     // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
                     hit.collider.gameObject.GetComponent<Bubble>()?.DestroyBubbleOnTap();
                 }
-            }
-            else
-            {
-                Debug.DrawLine(mousePosition, mousePosition + Vector3.zero, UnityEngine.Color.red, 2f);
-                Debug.Log("No hit detected");
             }
         }
         

@@ -19,6 +19,7 @@ public class Bubble : MonoBehaviour
     private Collider2D _collider;
     public Guid _bubbleId;
     public Container container;
+    public ScoreManager scoreManager;
     // private Level
     
     private void Awake()
@@ -79,27 +80,17 @@ public class Bubble : MonoBehaviour
             rb.AddForce(dirVector, ForceMode2D.Force);
         }
 
-        var collidingSameColorBubbles = GetAllContactingColliders();
-        if (collidingSameColorBubbles.Count >= 3)
-        {
-            container.DeleteBubbles(collidingSameColorBubbles);
-        }   
-        
+        CollideBubbles();
+
     }
     
     public void DestroyBubbleOnTap() {
-        // Add score
         // Instantiate(poof, transform.position, transform.rotation);
         if (!_hasReachedHorizon)
         {
+            scoreManager.AddScore(Config.Instance.SCORE_FOR_POPPED_BELOW_HORIZON);
             Destroy(gameObject);
         }
-    }
-    
-    private void DestroyBubbleAboveHorizon() {
-        // Add score
-        // Instantiate(poof, transform.position, transform.rotation);
-        // Destroy(gameObject);
     }
     
     private void OnTriggerStay2D(Collider2D other)
@@ -125,27 +116,37 @@ public class Bubble : MonoBehaviour
     public HashSet<Bubble> GetAllContactingColliders()
     {
         ContactFilter2D contactFilter = new ContactFilter2D();
-        contactFilter.useTriggers = true; // Include triggers
-        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer)); // Use layer collision matrix
-
-        // Use OverlapCollider to get all colliders overlapping with this collider
+        contactFilter.useTriggers = true;
+        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        
         List<Collider2D> contacts = new List<Collider2D>();
         _collider.Overlap(contactFilter, contacts);
 
         var collidingSameColorBubbles = new HashSet<Bubble>();
-        collidingSameColorBubbles.Add(this); // Add the current bubble to the set
+        collidingSameColorBubbles.Add(this);
 
         foreach (var contact in contacts)
         {
             Bubble bubble = contact.GetComponent<Bubble>();
             if (bubble != null &&
-                bubble._bubbleId != this._bubbleId && // Exclude self
-                bubble._color.Equals(_color))       // Match color
+                bubble._bubbleId != this._bubbleId &&
+                bubble._color.Equals(_color))
             {
                 collidingSameColorBubbles.Add(bubble);
             }
         }
 
         return collidingSameColorBubbles;
+    }
+
+    private void CollideBubbles()
+    {
+        var collidingSameColorBubbles = GetAllContactingColliders();
+        if (collidingSameColorBubbles.Count >= Config.Instance.NUMBER_OF_COLLISIONS_TO_POP)
+        {
+            scoreManager.AddScore(collidingSameColorBubbles.Count * Config.Instance.SCORE_FOR_POPPED_ABOVE_HORIZON);
+            container.DeleteBubbles(collidingSameColorBubbles);
+            scoreManager.IncreaseMultiplier(this.gameObject.transform.position);
+        }  
     }
 }
