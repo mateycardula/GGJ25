@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Container : MonoBehaviour
 {
@@ -7,6 +11,11 @@ public class Container : MonoBehaviour
     [SerializeField] private ScoreManager _scoreManager;
     private float elapsedTime = 0f;
     private Bubble bubble;
+    public List<Bubble> bubbles = new List<Bubble>();
+
+    private int popAllCounter { get; set; } = 3;
+    private int coolOffCounter { get; set; } = 4;
+    private int lidCounter { get; set; } = 2;
     void Start()
     {
         bubble = bubbleTransform.GetComponent<Bubble>();
@@ -22,11 +31,11 @@ public class Container : MonoBehaviour
             elapsedTime = 0f;
             int randomInt = Random.Range(0, 100);
 
-            Debug.Log(_scoreManager.Level);
             if (randomInt < _scoreManager.Level.spawnChance)
             {
                 bubble.container = this;
                 var newBubble = Instantiate(bubbleTransform, Vector3.zero, Quaternion.identity);
+                bubbles.Add(newBubble.GetComponent<Bubble>());
             }
         }
         
@@ -48,20 +57,66 @@ public class Container : MonoBehaviour
         
     }
     
-    
-
-
     public void GameOver()
     {
         // Transition to GameOver scene
         Destroy(gameObject);
     }
 
-    public void DeleteBubbles(HashSet<Bubble> bubbles)
+    public void DeleteBubbles(HashSet<Bubble> deleteBubbles)
     {
-        foreach (var bubble in bubbles)
+        foreach (var b in deleteBubbles)
         {
-            bubble.DestroyBubble(0.3f);
+            b.DestroyBubble(0.3f);
         }
     }
+    
+    // POWER UPS
+    public void PopAllFromColor()
+    {
+        if (popAllCounter == 0)
+        {
+            return;
+        }
+        var color = bubbles[Random.Range(0, bubbles.Count)].GetColor();
+        var destroyBubbles = bubbles.FindAll(b => b.GetColor() == color);
+
+        foreach (var b in destroyBubbles)
+        {
+            _scoreManager.AddScore(Config.Instance.SCORE_FOR_POPPED_BELOW_HORIZON);
+            b.DestroyBubble(0.3f);
+        }
+        
+        _scoreManager.IncreaseMultiplier();
+        
+        popAllCounter -=  1;
+    }
+    
+    // LOWER LEVEL
+    public void LowerLevel()
+    {
+        if (coolOffCounter == 0)
+        {
+            return;
+        }
+        _scoreManager.levelTimer = Config.Instance.LEVEL_TIMER;
+        if (_scoreManager.Level.level != 1)
+        {
+            _scoreManager.Level = Config.Instance.LEVELS[_scoreManager.Level.level - 2];
+        }
+
+        coolOffCounter -= 1;
+    }
+    
+    // PUT LID ON
+    public void putLidOn()
+    {
+        if (lidCounter == 0)
+        {
+            return;
+        }
+
+        lidCounter -= 1;
+    }
+    
 }

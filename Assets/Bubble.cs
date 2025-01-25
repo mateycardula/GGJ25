@@ -32,7 +32,6 @@ public class Bubble : MonoBehaviour
         _transform = GetComponent<Transform>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _mass = scoreManager.Level.mass;
-        Debug.Log(scoreManager.Level.mass);
         _color = Config.Instance.colors[new Random().Next(0, Config.Instance.colors.Count)];
         _hasReachedHorizon = false;
         _gravity = UnityEngine.Random.Range(Config.Instance.GRAVITY_RANGE.Item1, Config.Instance.GRAVITY_RANGE.Item2);
@@ -151,7 +150,7 @@ public class Bubble : MonoBehaviour
         {
             scoreManager.AddScore(collidingSameColorBubbles.Count * Config.Instance.SCORE_FOR_POPPED_ABOVE_HORIZON);
             container.DeleteBubbles(collidingSameColorBubbles);
-            scoreManager.IncreaseMultiplier(this.gameObject.transform.position);
+            scoreManager.IncreaseMultiplier();
         }  
     }
 
@@ -160,6 +159,12 @@ public class Bubble : MonoBehaviour
         if(IsDestroyed) return;
         IsDestroyed = true;
         _feedbackPlayer.PlayFeedbacks();
+        container.bubbles.Remove(this);
         Destroy(gameObject, destroyDelay);
+    }
+
+    public Color GetColor()
+    {
+        return _color;
     }
 }

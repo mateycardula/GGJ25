@@ -70,7 +70,7 @@ public class ScoreManager : MonoBehaviour
         score += (int) Math.Round(points * multiplier);
     }
 
-    public void IncreaseMultiplier(Vector3 position)
+    public void IncreaseMultiplier()
     {
         multiplierTimer = Config.Instance.MULTIPLIER_TIMER;
         multiplier *= Config.Instance.MULTIPLIER_INCREASE;
