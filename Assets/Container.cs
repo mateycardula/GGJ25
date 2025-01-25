@@ -14,9 +14,9 @@ public class Container : MonoBehaviour
     private Bubble bubble;
     public List<Bubble> bubbles = new List<Bubble>();
 
-    private int popAllCounter { get; set; } = 3;
-    private int coolOffCounter { get; set; } = 4;
-    private int lidCounter { get; set; } = 2;
+    public int popAllCounter { get; set; } = 3;
+    public int coolOffCounter { get; set; } = 4;
+    public int lidCounter { get; set; } = 2;
     void Start()
     {
         bubble = bubbleTransform.GetComponent<Bubble>();
