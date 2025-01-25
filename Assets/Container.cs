@@ -9,6 +9,7 @@ public class Container : MonoBehaviour
 {
     [SerializeField] private Transform bubbleTransform;
     [SerializeField] private ScoreManager _scoreManager;
+    [SerializeField] private Lid lid;
     private float elapsedTime = 0f;
     private Bubble bubble;
     public List<Bubble> bubbles = new List<Bubble>();
@@ -116,6 +117,8 @@ public class Container : MonoBehaviour
             return;
         }
 
+        lid.gameObject.SetActive(true);
+        
         lidCounter -= 1;
     }
     

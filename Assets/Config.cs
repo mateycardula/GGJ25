@@ -24,6 +24,7 @@ public class Config : MonoBehaviour
     public float MULTIPLIER_INCREASE = 1.2f;
     public float LEVEL_TIMER = 30f;
     public int MAX_LEVELS = 3;
+    public float POWERUP_LID_TIMER = 5f;
 
     public List<Level> LEVELS = new List<Level>();
     
