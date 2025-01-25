@@ -8,7 +8,7 @@ public class GameOverState : MonoBehaviour
     {
         if (other.CompareTag("Bubble"))
         {
-            container.GameOver();
+            // container.GameOver();
         }
     }
 }

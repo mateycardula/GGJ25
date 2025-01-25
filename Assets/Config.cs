@@ -8,12 +8,13 @@ using UnityEngine;
 public class Config : MonoBehaviour
 {
     public float SPAWN_CHANCE = 30;
-    public Tuple<int, int> MASS = new Tuple<int, int>(1, 5);
+    public Tuple<int, int> MASS = new Tuple<int, int>(1, 2);
     public float HORIZON_GRAVITY = 0.3f;
-    public Tuple<float, float> GRAVITY_RANGE = new Tuple<float, float>(-0.2f, -0.5f);
+    public Tuple<float, float> GRAVITY_RANGE = new Tuple<float, float>(-0.1f, -0.2f);
     public Tuple<float, float> SIZE_RANGE = new Tuple<float, float>(0.4f, 0.65f);
     public Transform LEFT_SPAWN_LIMIT, RIGHT_SPAWN_LIMIT;
     public List<Color> colors = new List<Color>();
+    public int NUMBER_OF_COLLISIONS_TO_POP = 3;
     
     private static Config  s_Instance;
     public static Config Instance

@@ -1,10 +1,13 @@
+using System;
+using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 using Random = System.Random;
 
 public class Bubble : MonoBehaviour
 {
     private Rigidbody2D rb;
-
+    
     [SerializeField] private Collider2D liquidArea;    
     private SpriteRenderer _spriteRenderer;
     private Transform _transform;
@@ -13,10 +16,14 @@ public class Bubble : MonoBehaviour
     private float _gravity;
     private float _size;
     private int _mass;
+    private Collider2D _collider;
+    public Guid _bubbleId;
+    public Container container;
     // private Level
     
     private void Awake()
     {
+        liquidArea = GameObject.Find("PlayZone").GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         _transform = GetComponent<Transform>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -25,6 +32,7 @@ public class Bubble : MonoBehaviour
         _hasReachedHorizon = false;
         _gravity = UnityEngine.Random.Range(Config.Instance.GRAVITY_RANGE.Item1, Config.Instance.GRAVITY_RANGE.Item2);
         _size = UnityEngine.Random.Range(Config.Instance.SIZE_RANGE.Item1, Config.Instance.SIZE_RANGE.Item2);
+        _bubbleId = Guid.NewGuid();
     }
 
     void Start()
@@ -42,6 +50,12 @@ public class Bubble : MonoBehaviour
         
         rb.mass = _mass;
         rb.gravityScale = _gravity;
+        
+        Collider2D[] colliders = GetComponents<Collider2D>();
+        if (colliders.Length > 0)
+        {
+            _collider = colliders[2];
+        }
     }
     private float elapsedTime = 0f;
 
@@ -64,14 +78,30 @@ public class Bubble : MonoBehaviour
             elapsedTime = 0f;
             rb.AddForce(dirVector, ForceMode2D.Force);
         }
-    }
 
-    private void OnMouseDown() {
-        // Add score
-        // Instantiate(poof, transform.position, transform.rotation);
+        var collidingSameColorBubbles = GetAllContactingColliders();
+        if (collidingSameColorBubbles.Count >= 3)
+        {
+            container.DeleteBubbles(collidingSameColorBubbles);
+        }   
         
     }
-
+    
+    public void DestroyBubbleOnTap() {
+        // Add score
+        // Instantiate(poof, transform.position, transform.rotation);
+        if (!_hasReachedHorizon)
+        {
+            Destroy(gameObject);
+        }
+    }
+    
+    private void DestroyBubbleAboveHorizon() {
+        // Add score
+        // Instantiate(poof, transform.position, transform.rotation);
+        // Destroy(gameObject);
+    }
+    
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other == liquidArea)
@@ -89,5 +119,33 @@ public class Bubble : MonoBehaviour
             rb.gravityScale = Config.Instance.HORIZON_GRAVITY;
             rb.mass = Config.Instance.MASS.Item1;
         }
+    }
+    
+    // ReSharper disable Unity.PerformanceAnalysis
+    public HashSet<Bubble> GetAllContactingColliders()
+    {
+        ContactFilter2D contactFilter = new ContactFilter2D();
+        contactFilter.useTriggers = true; // Include triggers
+        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer)); // Use layer collision matrix
+
+        // Use OverlapCollider to get all colliders overlapping with this collider
+        List<Collider2D> contacts = new List<Collider2D>();
+        _collider.Overlap(contactFilter, contacts);
+
+        var collidingSameColorBubbles = new HashSet<Bubble>();
+        collidingSameColorBubbles.Add(this); // Add the current bubble to the set
+
+        foreach (var contact in contacts)
+        {
+            Bubble bubble = contact.GetComponent<Bubble>();
+            if (bubble != null &&
+                bubble._bubbleId != this._bubbleId && // Exclude self
+                bubble._color.Equals(_color))       // Match color
+            {
+                collidingSameColorBubbles.Add(bubble);
+            }
+        }
+
+        return collidingSameColorBubbles;
     }
 }
