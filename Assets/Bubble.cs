@@ -70,11 +70,11 @@ public class Bubble : MonoBehaviour
             float direction = UnityEngine.Random.Range(0f, 100f);
             if (direction < 50f)
             {
-                dirVector = Vector2.right*25f;
+                dirVector = Vector2.right * (5f * _mass);
             }
             else
             {
-                dirVector = Vector2.left*25f;
+                dirVector = Vector2.left * (5f * _mass);
             }
             elapsedTime = 0f;
             rb.AddForce(dirVector, ForceMode2D.Force);
@@ -92,7 +92,7 @@ public class Bubble : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other == liquidArea)
@@ -130,7 +130,8 @@ public class Bubble : MonoBehaviour
             Bubble bubble = contact.GetComponent<Bubble>();
             if (bubble != null &&
                 bubble._bubbleId != this._bubbleId &&
-                bubble._color.Equals(_color))
+                bubble._color.Equals(_color) && 
+                _color.IsPoppable)
             {
                 collidingSameColorBubbles.Add(bubble);
             }
