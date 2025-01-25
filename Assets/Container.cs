@@ -11,6 +11,7 @@ public class Container : MonoBehaviour
     
     void Update()
     {
+        // Spawn bubbles
         elapsedTime += Time.deltaTime;
         
         if (elapsedTime >= 1f)
@@ -23,7 +24,16 @@ public class Container : MonoBehaviour
                 Instantiate(bubble);
             }
         }
+
+        // Check for pop withing poppable area
+
+        if ()
+
+
+
     }
+
+
 
     public void GameOver()
     {

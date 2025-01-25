@@ -66,6 +66,12 @@ public class Bubble : MonoBehaviour
         }
     }
 
+    private void OnMouseDown() {
+        // Add score
+        // Instantiate(poof, transform.position, transform.rotation);
+        
+    }
+
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other == liquidArea)
