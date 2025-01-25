@@ -39,7 +39,7 @@ public class Container : MonoBehaviour
             coolOffCounter = value;
             var coolOffSprite = value > 0 ? _powerUpsUI.lowerLevelButtonSprites[1] : _powerUpsUI.lowerLevelButtonSprites[0];
             _powerUpsUI.lowerLevelButton.image.sprite = coolOffSprite; 
-            _powerUpsUI.popAllPowerUpCounter.text = value.ToString();
+            _powerUpsUI.lowerLevelButtonCounter.text = value.ToString();
         }
     }
 
@@ -153,13 +153,11 @@ public class Container : MonoBehaviour
     // PUT LID ON
     public void putLidOn()
     {
-        if (LidCounter == 0)
+        if (LidCounter == 0 || lid.timer>0)
         {
             return;
         }
-
-        lid.gameObject.SetActive(true);
-        
+        lid.Activate();
         LidCounter -= 1;
     }
     

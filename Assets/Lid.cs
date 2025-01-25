@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class Lid : MonoBehaviour
 {
-    private float timer = 0;
+    public float timer = 0;
+    private Animator lidAnimator; 
     
     void Start()
     {
-        this.gameObject.SetActive(false);
+        lidAnimator = GetComponent<Animator>();
     }
 
     void Update()
@@ -18,7 +19,7 @@ public class Lid : MonoBehaviour
         }
         else
         {
-            this.gameObject.SetActive(false);
+            lidAnimator.SetBool("isActive", false);
             timer = 0;
         }
     }
@@ -35,5 +36,11 @@ public class Lid : MonoBehaviour
         {
             other.gameObject.GetComponent<Bubble>().DestroyBubble(0);
         }
+    }
+
+    public void Activate()
+    {
+        timer = Config.Instance.POWERUP_LID_TIMER;
+        lidAnimator.SetBool("isActive", true);
     }
 }
