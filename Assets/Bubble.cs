@@ -88,8 +88,7 @@ public class Bubble : MonoBehaviour
     }
     
     public void DestroyBubbleOnTap() {
-        // Instantiate(poof, transform.position, transform.rotation);
-        if (!_hasReachedHorizon)
+        if (!_hasReachedHorizon && !IsDestroyed)
         {
             scoreManager.AddScore(Config.Instance.SCORE_FOR_POPPED_BELOW_HORIZON);
             DestroyBubble(0.15f);
@@ -145,6 +144,7 @@ public class Bubble : MonoBehaviour
 
     private void CollideBubbles()
     {
+        if(IsDestroyed) return;
         var collidingSameColorBubbles = GetAllContactingColliders();
         if (collidingSameColorBubbles.Count >= Config.Instance.NUMBER_OF_COLLISIONS_TO_POP)
         {

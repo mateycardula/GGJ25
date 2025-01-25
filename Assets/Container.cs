@@ -9,16 +9,57 @@ public class Container : MonoBehaviour
 {
     [SerializeField] private Transform bubbleTransform;
     [SerializeField] private ScoreManager _scoreManager;
+    [SerializeField] private PowerUpsUI _powerUpsUI;
     [SerializeField] private Lid lid;
     private float elapsedTime = 0f;
     private Bubble bubble;
     public List<Bubble> bubbles = new List<Bubble>();
 
-    public int popAllCounter { get; set; } = 3;
-    public int coolOffCounter { get; set; } = 4;
-    public int lidCounter { get; set; } = 2;
+    private int popAllCounter;
+    private int coolOffCounter;
+    private int lidCounter;
+
+    public int PopAllCounter
+    {
+        get => popAllCounter;
+        set
+        {
+            popAllCounter = value;
+            var popAllSprite = value > 0 ? _powerUpsUI.popAllButtonSprites[1] : _powerUpsUI.popAllButtonSprites[0];
+            _powerUpsUI.popAllButton.image.sprite = popAllSprite;
+            _powerUpsUI.popAllPowerUpCounter.text = value.ToString();
+        }
+    }
+
+    public int CoolOffCounter
+    {
+        get => coolOffCounter;
+        set
+        {
+            coolOffCounter = value;
+            var coolOffSprite = value > 0 ? _powerUpsUI.lowerLevelButtonSprites[1] : _powerUpsUI.lowerLevelButtonSprites[0];
+            _powerUpsUI.lowerLevelButton.image.sprite = coolOffSprite; 
+            _powerUpsUI.popAllPowerUpCounter.text = value.ToString();
+        }
+    }
+
+    public int LidCounter
+    {
+        get => lidCounter;
+        set
+        {
+            lidCounter = value;
+            var lidSprite = value > 0 ? _powerUpsUI.lidButtonSpries[1] : _powerUpsUI.lidButtonSpries[0];
+            _powerUpsUI.lidButton.image.sprite = lidSprite;
+            _powerUpsUI.lidPowerUpCounter.text = value.ToString();
+        }
+    }
+
     void Start()
     {
+        LidCounter = 2;
+        PopAllCounter = 3;
+        CoolOffCounter = 3;
         bubble = bubbleTransform.GetComponent<Bubble>();
     }
 
@@ -75,7 +116,7 @@ public class Container : MonoBehaviour
     // POWER UPS
     public void PopAllFromColor()
     {
-        if (popAllCounter == 0)
+        if (PopAllCounter == 0)
         {
             return;
         }
@@ -90,13 +131,13 @@ public class Container : MonoBehaviour
         
         _scoreManager.IncreaseMultiplier();
         
-        popAllCounter -=  1;
+        PopAllCounter -=  1;
     }
     
     // LOWER LEVEL
     public void LowerLevel()
     {
-        if (coolOffCounter == 0)
+        if (CoolOffCounter == 0)
         {
             return;
         }
@@ -106,20 +147,20 @@ public class Container : MonoBehaviour
             _scoreManager.Level = Config.Instance.LEVELS[_scoreManager.Level.level - 2];
         }
 
-        coolOffCounter -= 1;
+        CoolOffCounter -= 1;
     }
     
     // PUT LID ON
     public void putLidOn()
     {
-        if (lidCounter == 0)
+        if (LidCounter == 0)
         {
             return;
         }
 
         lid.gameObject.SetActive(true);
         
-        lidCounter -= 1;
+        LidCounter -= 1;
     }
     
 }

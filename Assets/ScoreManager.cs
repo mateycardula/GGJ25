@@ -4,12 +4,48 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public int score;
+    [SerializeField] private OvenUI _ovenUI;
+
+    [SerializeField]
+    private LevelSwitch levelSwitch;
+    
     public float multiplier;
     public Bubble bubble;
     public float multiplierTimer;
     public float levelTimer;
-    public Level Level;
+    
+    private Level _level;
+    public Level Level
+    {
+        get => _level;
+        set
+        {
+            if (_level?.level < value.level && _level != null) 
+            {
+                levelSwitch.targetAngle -= 90.0f;
+            }
+
+            if (_level?.level > value.level && _level != null)
+            {
+                levelSwitch.targetAngle += 90.0f;
+            }
+            
+            _level = value;
+            _ovenUI.LevelDisplayCounter.text = _level.level.ToString();
+        }
+    }
+
+    private int _score;
+    public int Score
+    {
+        get => _score;
+        set
+        {
+            _score = value;
+            _ovenUI.ScoreDisplayCounter.text = _score.ToString();
+        }
+    }
+
     void Awake()
     {
         bubble.scoreManager = this;
@@ -17,10 +53,12 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         multiplier = Config.Instance.STARTING_MULTIPLIER;
-        score = 0;
+        Score = 0;
         multiplierTimer = 0f;
         levelTimer = Config.Instance.LEVEL_TIMER;
         Level = Config.Instance.LEVELS[0];
+        _ovenUI.LevelDisplayCounter.text = _level.level.ToString();
+        _ovenUI.ScoreDisplayCounter.text = _score.ToString();
     }
 
     void Update()
@@ -57,17 +95,17 @@ public class ScoreManager : MonoBehaviour
 
     private void IncreaseLevel()
     {
-        if (Level.level == Config.Instance.MAX_LEVELS)
+        if (_level.level == Config.Instance.MAX_LEVELS)
         {
             return;
         }
         
-        Level = Config.Instance.LEVELS[Level.level];
+        Level = Config.Instance.LEVELS[_level.level];
     }
 
     public void AddScore(int points)
     {
-        score += (int) Math.Round(points * multiplier);
+        Score += (int) Math.Round(points * multiplier);
     }
 
     public void IncreaseMultiplier()

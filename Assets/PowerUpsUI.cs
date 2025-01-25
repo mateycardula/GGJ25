@@ -5,17 +5,17 @@ using TMPro;
 
 public class PowerUpsUI : MonoBehaviour
 {
-    [SerializeField] private Button lidButton;
-    [SerializeField] private Button popAllButton;
-    [SerializeField] private Button lowerLevelButton;
+    [SerializeField] public Button lidButton;
+    [SerializeField] public Button popAllButton;
+    [SerializeField] public Button lowerLevelButton;
 
-    [SerializeField] private List<Sprite> lidButtonSpries;
-    [SerializeField] private List<Sprite> popAllButtonSprites;
-    [SerializeField] private List<Sprite> lowerLevelButtonSprites;
+    [SerializeField] public List<Sprite> lidButtonSpries;
+    [SerializeField] public List<Sprite> popAllButtonSprites;
+    [SerializeField] public List<Sprite> lowerLevelButtonSprites;
 
-    [SerializeField] private TextMeshProUGUI lidPowerUpCounter;
-    [SerializeField] private TextMeshProUGUI popAllPowerUpCounter;
-    [SerializeField] private TextMeshProUGUI lowerLevelButtonCounter;
+    [SerializeField] public TextMeshProUGUI lidPowerUpCounter;
+    [SerializeField] public TextMeshProUGUI popAllPowerUpCounter;
+    [SerializeField] public TextMeshProUGUI lowerLevelButtonCounter;
 
 
     // Start is called before the first frame update

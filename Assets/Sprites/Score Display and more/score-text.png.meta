@@ -1,16 +1,13 @@
 fileFormatVersion: 2
-guid: ceb1d4ee11d414c61aa72c0b271443f3
+guid: 5c611e319d20c4015896a54eccc0646d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8413875096078087476
-    second: Cool-Off-active_0
+      213: -2728615941661763713
+    second: score-text_0
   - first:
-      213: -4884920233436415440
-    second: Cool-Off-active_1
-  - first:
-      213: 8994746924416875232
-    second: Cool-Off-active_2
+      213: -268971426791207865
+    second: score-text_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +49,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -132,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Cool-Off-active_0
+      name: score-text_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 212
-        height: 200
+        width: 68
+        height: 21
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,20 +144,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4357d3e32d614c470800000000000000
-      internalID: 8413875096078087476
+      spriteID: f7758c40242022ad0800000000000000
+      internalID: -2728615941661763713
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cool-Off-active_1
+      name: score-text_1
       rect:
         serializedVersion: 2
-        x: 139
-        y: 173
-        width: 25
-        height: 34
+        x: 67
+        y: 0
+        width: 45
+        height: 21
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,30 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 03a77e9dde6453cb0800000000000000
-      internalID: -4884920233436415440
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cool-Off-active_2
-      rect:
-        serializedVersion: 2
-        x: 161
-        y: 178
-        width: 28
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0eab76aeba2c3dc70800000000000000
-      internalID: 8994746924416875232
+      spriteID: 74c416399eb644cf0800000000000000
+      internalID: -268971426791207865
       vertices: []
       indices: 
       edges: []
@@ -201,7 +176,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -211,9 +186,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Cool-Off-active_0: 8413875096078087476
-      Cool-Off-active_1: -4884920233436415440
-      Cool-Off-active_2: 8994746924416875232
+      score-text_0: -2728615941661763713
+      score-text_1: -268971426791207865
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
