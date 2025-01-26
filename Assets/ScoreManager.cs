@@ -9,6 +9,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]
     private LevelSwitch levelSwitch;
     
+    [SerializeField]
+    private MultiplierLabel multiplierLabel;
+    
     public float multiplier;
     public Bubble bubble;
     public float multiplierTimer;
@@ -112,6 +115,7 @@ public class ScoreManager : MonoBehaviour
     {
         multiplierTimer = Config.Instance.MULTIPLIER_TIMER;
         multiplier *= Config.Instance.MULTIPLIER_INCREASE;
+        multiplierLabel.ShowMultiplier(multiplier);
     }
     
 }
