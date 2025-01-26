@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Serialization;
 
 
 [DefaultExecutionOrder(-999)]
 public class Config : MonoBehaviour
 {
+    [SerializeField] private List<AudioClip> gasLevelsAudioClips;
     public float SPAWN_CHANCE = 50;
     public Tuple<int, int> MASS = new Tuple<int, int>(1, 2);
     public float HORIZON_GRAVITY = 0.3f;
@@ -22,7 +25,7 @@ public class Config : MonoBehaviour
     public int SCORE_FOR_POPPED_BELOW_HORIZON = 1;
     public float MULTIPLIER_TIMER = 5f;
     public float MULTIPLIER_INCREASE = 1.2f;
-    public float LEVEL_TIMER = 30f;
+    // public float LEVEL_TIMER = 30f;
     public int MAX_LEVELS = 3;
     public float POWERUP_LID_TIMER = 5f;
     public float BASE_LIQUID_SPEED = 2f;
@@ -53,6 +56,19 @@ public class Config : MonoBehaviour
             s_Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        var level0 =
+            new Level
+            {
+                mass = Instance.MASS.Item2,
+                level = 0,
+                spawnChance = 0,
+                spawnInterval = 0,
+                liquidSpeed = 0,
+                rotationAngle = 0f,
+                levelTimer = 2.0f,
+                gasLifetime = 0.0f,
+                gasSound = null
+            };
 
         var level1 =
             new Level
@@ -61,7 +77,11 @@ public class Config : MonoBehaviour
                 level = 1,
                 spawnChance = Instance.SPAWN_CHANCE,
                 spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL,
-                liquidSpeed = Instance.BASE_LIQUID_SPEED
+                liquidSpeed = Instance.BASE_LIQUID_SPEED,
+                rotationAngle = -90f,
+                levelTimer = 30.0f,
+                gasLifetime = 1.2f,
+                gasSound = gasLevelsAudioClips[0]
             };
         var level2 =
             new Level
@@ -70,7 +90,11 @@ public class Config : MonoBehaviour
                 level = 2,
                 spawnChance = Instance.SPAWN_CHANCE + 10,
                 spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL - 0.2f,
-                liquidSpeed = Instance.BASE_LIQUID_SPEED + 2f
+                liquidSpeed = Instance.BASE_LIQUID_SPEED + 2f,
+                rotationAngle = -180f,
+                levelTimer = 60.0f,
+                gasLifetime = 2.0f,
+                gasSound = gasLevelsAudioClips[1]
             };
         var level3 =
             new Level
@@ -79,9 +103,14 @@ public class Config : MonoBehaviour
                 level = 3,
                 spawnChance = Instance.SPAWN_CHANCE + 20,
                 spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL - 0.35f,
-                liquidSpeed = Instance.BASE_LIQUID_SPEED + 4f
+                liquidSpeed = Instance.BASE_LIQUID_SPEED + 4f,
+                rotationAngle = -270f,
+                levelTimer = 60.0f,
+                gasLifetime = 3.0f,
+                gasSound = gasLevelsAudioClips[2]
             };
         
+        LEVELS.Add(level0);
         LEVELS.Add(level1);
         LEVELS.Add(level2);
         LEVELS.Add(level3);
@@ -95,6 +124,10 @@ public class Level
     public float mass { get; set; }
     public float spawnChance { get; set; }
     public float spawnInterval { get; set; }
-    
     public float liquidSpeed { get; set; }
+    public float rotationAngle { get; set; }
+    public float levelTimer { get; set; }
+    public float gasLifetime { get; set; }
+    
+    [CanBeNull] public AudioClip gasSound { get; set; }
 }

@@ -34,7 +34,7 @@ public class Lid : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bubble"))
         {
-            other.gameObject.GetComponent<Bubble>().DestroyBubble(0);
+            other.gameObject.GetComponent<Bubble>().DestroyBubble(0.2f);
         }
     }
 

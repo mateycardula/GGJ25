@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,10 +12,14 @@ public class Container : MonoBehaviour
     [SerializeField] private ScoreManager _scoreManager;
     [SerializeField] private PowerUpsUI _powerUpsUI;
     [SerializeField] private Lid lid;
+    [SerializeField] private AudioSource gameplayMusicSource;
+    [SerializeField] private AudioClip gamePlayAudioClip;
+    [SerializeField] private Transform liquidMask;
     private float elapsedTime = 0f;
     private Bubble bubble;
     public List<Bubble> bubbles = new List<Bubble>();
 
+    private bool _gameStarted;
     private int popAllCounter;
     private int coolOffCounter;
     private int lidCounter;
@@ -55,17 +60,29 @@ public class Container : MonoBehaviour
         }
     }
 
+    void Awake()
+    {
+        gameplayMusicSource.clip = gamePlayAudioClip;
+        AudioManager.Instance.PlayGamePlaySource(gameplayMusicSource);
+    }
+
     void Start()
     {
+        
+        var scale = liquidMask.transform.localScale;
+        scale.y = 0.0f;
+        liquidMask.transform.localScale = scale;
+        _gameStarted = false;
         LidCounter = 2;
         PopAllCounter = 3;
         CoolOffCounter = 3;
         bubble = bubbleTransform.GetComponent<Bubble>();
+        StartCoroutine(StartGame());
     }
 
     void Update()
     {
-        // Spawn bubbles
+        if(!_gameStarted) return;
         elapsedTime += Time.deltaTime;
 
         if (elapsedTime >= _scoreManager.Level.spawnInterval)
@@ -141,12 +158,11 @@ public class Container : MonoBehaviour
         {
             return;
         }
-        _scoreManager.levelTimer = Config.Instance.LEVEL_TIMER;
-        if (_scoreManager.Level.level != 1)
+        if (_scoreManager.Level.level != 0)
         {
-            _scoreManager.Level = Config.Instance.LEVELS[_scoreManager.Level.level - 2];
+            _scoreManager.Level = Config.Instance.LEVELS[_scoreManager.Level.level - 1];
         }
-
+        
         CoolOffCounter -= 1;
     }
     
@@ -160,5 +176,31 @@ public class Container : MonoBehaviour
         lid.Activate();
         LidCounter -= 1;
     }
-    
+
+    public IEnumerator StartGame()
+    {
+        float elapsedTime = 0f;
+        float targetScale = 1f;
+        Vector3 initialScale = liquidMask.transform.localScale;
+
+        yield return new WaitForSeconds(0.2f);
+        while (elapsedTime < 2f)
+        {
+            float normalizedTime = Mathf.Clamp01(elapsedTime / 2f); 
+
+            float newScaleY = Mathf.Lerp(initialScale.y, targetScale, normalizedTime);
+
+            liquidMask.transform.localScale = new Vector3(initialScale.x, newScaleY, initialScale.z);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        liquidMask.transform.localScale = new Vector3(initialScale.x, targetScale, initialScale.z);
+
+        _gameStarted = true;
+        _scoreManager.StartGame();
+    }
+
 }

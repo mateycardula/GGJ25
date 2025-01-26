@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,28 +16,46 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]
     private Renderer liquidRenderer;
     
+    [SerializeField] AudioSource gasAudioSource;
+    [SerializeField] ParticleSystem gasParticleSystem;
+    
     public float multiplier;
     public Bubble bubble;
     public float multiplierTimer;
     public float levelTimer;
-    
+    public bool gameStarted = false;
     private Level _level;
     public Level Level
     {
         get => _level;
         set
         {
+            
             if (_level?.level < value.level && _level != null) 
             {
-                levelSwitch.targetAngle -= 90.0f;
+                levelSwitch.TargetAngle = value.rotationAngle;
             }
 
             if (_level?.level > value.level && _level != null)
             {
-                levelSwitch.targetAngle += 90.0f;
+                levelSwitch.TargetAngle = value.rotationAngle;
             }
-            liquidRenderer.material.SetFloat("_WaveSpeed", value.liquidSpeed);
 
+            var main = gasParticleSystem.main; 
+            main.startLifetime = value.gasLifetime;
+
+            if (value.gasSound != null)
+            {
+                gasAudioSource.clip = value.gasSound;
+                AudioManager.Instance.PlayGasSource(gasAudioSource);
+            }
+            else
+            {
+                gasAudioSource.Stop();
+            }
+            
+            liquidRenderer.material.SetFloat("_WaveSpeed", value.liquidSpeed);
+            levelTimer = value.levelTimer;
             _level = value;
             _ovenUI.LevelDisplayCounter.text = _level.level.ToString();
         }
@@ -62,14 +81,15 @@ public class ScoreManager : MonoBehaviour
         multiplier = Config.Instance.STARTING_MULTIPLIER;
         Score = 0;
         multiplierTimer = 0f;
-        levelTimer = Config.Instance.LEVEL_TIMER;
         Level = Config.Instance.LEVELS[0];
+        levelTimer = _level.levelTimer;
         _ovenUI.LevelDisplayCounter.text = _level.level.ToString();
         _ovenUI.ScoreDisplayCounter.text = _score.ToString();
     }
 
     void Update()
     {
+        if(!gameStarted) return;
         ManageMultiplierTimer();
         ManageLevelTimer();
     }
@@ -96,7 +116,7 @@ public class ScoreManager : MonoBehaviour
         else
         {
             IncreaseLevel();
-            levelTimer = Config.Instance.LEVEL_TIMER;
+            levelTimer = _level.levelTimer;
         }
     }
 
@@ -107,7 +127,7 @@ public class ScoreManager : MonoBehaviour
             return;
         }
         
-        Level = Config.Instance.LEVELS[_level.level];
+        Level = Config.Instance.LEVELS[_level.level + 1];
     }
 
     public void AddScore(int points)
@@ -121,5 +141,14 @@ public class ScoreManager : MonoBehaviour
         multiplier *= Config.Instance.MULTIPLIER_INCREASE;
         multiplierLabel.ShowMultiplier(multiplier, popColor);
     }
-    
+
+    public void StartGame()
+    {
+        Debug.Log("Game started");
+        if (Level.level == 0)
+        {
+            gameStarted = true;
+            IncreaseLevel();
+        }
+    }
 }
