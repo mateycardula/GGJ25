@@ -14,6 +14,8 @@ public class AudioManager : MonoBehaviour
     public AudioMixerGroup GasGroup;
     public AudioMixerGroup PopGroup;
     public AudioMixerGroup GamePlayMusicGroup;
+    public AudioMixerGroup GameOverMusicGroup;
+    public AudioMixerGroup BoilingWaterGroup;
     
     public AudioMixerSnapshot mainMenuMixer;
     public AudioMixerSnapshot gameplayMixer;
@@ -65,7 +67,6 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFXSource(AudioSource source)
     {
-        Debug.Log("Play SFX source");
         source.outputAudioMixerGroup = PopGroup;
         source.Play();
     }
@@ -85,7 +86,23 @@ public class AudioManager : MonoBehaviour
 
     public void PlayGamePlaySource(AudioSource source)
     {
+        gameplayMixer.TransitionTo(1.0f);
         source.outputAudioMixerGroup = GamePlayMusicGroup;
+        source.loop = true;
+        source.Play();
+    }
+
+    public void PlayGameOverSource(AudioSource source)
+    {
+        source.outputAudioMixerGroup = GameOverMusicGroup;
+        source.loop = true;
+        source.Play();
+        endGameplayMixer.TransitionTo(1.0f);
+    }
+    
+    public void PlayBoilingWaterSource(AudioSource source)
+    {
+        source.outputAudioMixerGroup = BoilingWaterGroup;
         source.loop = true;
         source.Play();
     }

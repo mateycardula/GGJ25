@@ -152,7 +152,7 @@ public class Bubble : MonoBehaviour
 
     private void CollideBubbles()
     {
-        if(IsDestroyed) return;
+        if(IsDestroyed || container._gameOver) return;
         var collidingSameColorBubbles = GetAllContactingColliders();
         if (collidingSameColorBubbles.Count >= Config.Instance.NUMBER_OF_COLLISIONS_TO_POP)
         {

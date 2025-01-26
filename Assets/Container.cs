@@ -4,17 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 public class Container : MonoBehaviour
 {
     [SerializeField] private Transform bubbleTransform;
-    [SerializeField] private ScoreManager _scoreManager;
+    [SerializeField] public ScoreManager _scoreManager;
     [SerializeField] private PowerUpsUI _powerUpsUI;
     [SerializeField] private Lid lid;
     [SerializeField] private AudioSource gameplayMusicSource;
     [SerializeField] private AudioClip gamePlayAudioClip;
     [SerializeField] private Transform liquidMask;
+    [SerializeField] private GameOverUI _gameOverUI;
+    [SerializeField] private AudioClip boilingWaterClip;
+    [SerializeField] private AudioMixerGroup boilingWaterGroup;
+    [SerializeField] private AudioSource boilingWaterAudioSource;
     private float elapsedTime = 0f;
     private Bubble bubble;
     public List<Bubble> bubbles = new List<Bubble>();
@@ -23,6 +29,7 @@ public class Container : MonoBehaviour
     private int popAllCounter;
     private int coolOffCounter;
     private int lidCounter;
+    public bool _gameOver;
 
     public int PopAllCounter
     {
@@ -63,12 +70,13 @@ public class Container : MonoBehaviour
     void Awake()
     {
         gameplayMusicSource.clip = gamePlayAudioClip;
+        boilingWaterAudioSource.clip = boilingWaterClip;
+        AudioManager.Instance.PlayBoilingWaterSource(boilingWaterAudioSource);
         AudioManager.Instance.PlayGamePlaySource(gameplayMusicSource);
     }
 
     void Start()
     {
-        
         var scale = liquidMask.transform.localScale;
         scale.y = 0.0f;
         liquidMask.transform.localScale = scale;
@@ -100,6 +108,7 @@ public class Container : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
+            if(_gameOver) return;
             var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             
             var hit = Physics2D.Raycast(mousePosition, Vector2.zero);
@@ -118,8 +127,10 @@ public class Container : MonoBehaviour
     
     public void GameOver()
     {
-        // Transition to GameOver scene
-        Destroy(gameObject);
+        if(_gameOver) return;
+        _gameOver = true;
+        _scoreManager.Level = Config.Instance.GameOverLevel;
+        _gameOverUI.gameObject.SetActive(true);
     }
 
     public void DeleteBubbles(HashSet<Bubble> deleteBubbles)
@@ -133,6 +144,7 @@ public class Container : MonoBehaviour
     // POWER UPS
     public void PopAllFromColor()
     {
+        if(_gameOver) return;
         if (PopAllCounter == 0)
         {
             return;
@@ -154,6 +166,7 @@ public class Container : MonoBehaviour
     // LOWER LEVEL
     public void LowerLevel()
     {
+        if(_gameOver) return;
         if (CoolOffCounter == 0)
         {
             return;
@@ -169,6 +182,7 @@ public class Container : MonoBehaviour
     // PUT LID ON
     public void putLidOn()
     {
+        if(_gameOver) return;
         if (LidCounter == 0 || lid.timer>0)
         {
             return;

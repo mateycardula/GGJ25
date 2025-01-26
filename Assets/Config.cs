@@ -31,6 +31,7 @@ public class Config : MonoBehaviour
     public float BASE_LIQUID_SPEED = 2f;
 
     public List<Level> LEVELS = new List<Level>();
+    public Level GameOverLevel;
     
     private static Config  s_Instance;
     public static Config Instance
@@ -79,7 +80,7 @@ public class Config : MonoBehaviour
                 spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL,
                 liquidSpeed = Instance.BASE_LIQUID_SPEED,
                 rotationAngle = -90f,
-                levelTimer = 30.0f,
+                levelTimer = 10.0f,
                 gasLifetime = 1.2f,
                 gasSound = gasLevelsAudioClips[0]
             };
@@ -92,7 +93,7 @@ public class Config : MonoBehaviour
                 spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL - 0.2f,
                 liquidSpeed = Instance.BASE_LIQUID_SPEED + 2f,
                 rotationAngle = -180f,
-                levelTimer = 60.0f,
+                levelTimer = 10.0f,
                 gasLifetime = 2.0f,
                 gasSound = gasLevelsAudioClips[1]
             };
@@ -104,6 +105,20 @@ public class Config : MonoBehaviour
                 spawnChance = Instance.SPAWN_CHANCE + 20,
                 spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL - 0.35f,
                 liquidSpeed = Instance.BASE_LIQUID_SPEED + 4f,
+                rotationAngle = -270f,
+                levelTimer = 10.0f,
+                gasLifetime = 3.0f,
+                gasSound = gasLevelsAudioClips[2]
+            };
+        
+        GameOverLevel = 
+            new Level
+            {
+                mass = Instance.MASS.Item2 + 10,
+                level = 4,
+                spawnChance = 80,
+                spawnInterval = 0.02f,
+                liquidSpeed = Instance.BASE_LIQUID_SPEED + 6f,
                 rotationAngle = -270f,
                 levelTimer = 60.0f,
                 gasLifetime = 3.0f,

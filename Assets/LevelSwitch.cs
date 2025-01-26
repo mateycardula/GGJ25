@@ -42,7 +42,7 @@ public class LevelSwitch : MonoBehaviour
 
         if (!Mathf.Approximately(rotationAngle, targetAngle))
         {
-            rotationAngle = Mathf.LerpAngle(rotationAngle, targetAngle, Time.deltaTime * 10.0f);
+            rotationAngle = Mathf.LerpAngle(rotationAngle, targetAngle, Time.deltaTime * 7.0f);
         }
         SwitchTransform.localRotation = Quaternion.Euler(rotation.eulerAngles.x, rotation.eulerAngles.y, rotationAngle);
     }

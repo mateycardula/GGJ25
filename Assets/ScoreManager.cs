@@ -18,7 +18,7 @@ public class ScoreManager : MonoBehaviour
     
     [SerializeField] AudioSource gasAudioSource;
     [SerializeField] ParticleSystem gasParticleSystem;
-    
+    [SerializeField] Container container;
     public float multiplier;
     public Bubble bubble;
     public float multiplierTimer;
@@ -30,7 +30,11 @@ public class ScoreManager : MonoBehaviour
         get => _level;
         set
         {
-            
+            if (value.level == 4)
+            {
+                _level = value;
+                return;
+            }
             if (_level?.level < value.level && _level != null) 
             {
                 levelSwitch.TargetAngle = value.rotationAngle;
@@ -89,7 +93,7 @@ public class ScoreManager : MonoBehaviour
 
     void Update()
     {
-        if(!gameStarted) return;
+        if(!gameStarted || container._gameOver) return;
         ManageMultiplierTimer();
         ManageLevelTimer();
     }
