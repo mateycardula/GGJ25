@@ -110,6 +110,16 @@ MonoBehaviour:
   container: {fileID: 0}
   scoreManager: {fileID: 0}
   _feedbackPlayer: {fileID: 4813219394159860584}
+  bubblePops:
+  - {fileID: 8300000, guid: 142c8599e522a4d6fb780e3d4cdaf3fc, type: 3}
+  - {fileID: 8300000, guid: 0094d4e68e68148e8b3436c4c71926eb, type: 3}
+  - {fileID: 8300000, guid: 293cc3712a7fb4bb4b4936a28b35c884, type: 3}
+  - {fileID: 8300000, guid: 05a0dd23ead2d405a8b46b4841e3cf9a, type: 3}
+  - {fileID: 8300000, guid: 1bc38f89c6028426e902b5434f9b1da5, type: 3}
+  - {fileID: 8300000, guid: f408e051a36514326b055f3dd9fd0300, type: 3}
+  - {fileID: 8300000, guid: 44e269be5fdc14f848170f00e5606d4d, type: 3}
+  - {fileID: 8300000, guid: e989d26bb48404490877f9212f09ffb5, type: 3}
+  - {fileID: 8300000, guid: a6005f6e561284cd8ab3113d6a55d24f, type: 3}
 --- !u!58 &5029600879637631600
 CircleCollider2D:
   m_ObjectHideFlags: 0

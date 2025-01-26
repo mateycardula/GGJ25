@@ -22,7 +22,7 @@ public class Bubble : MonoBehaviour
     public Container container;
     public ScoreManager scoreManager;
     public MMF_Player _feedbackPlayer;
-    // private Level
+    [SerializeField] public List<AudioClip> bubblePops;
     
     private void Awake()
     {
@@ -37,6 +37,7 @@ public class Bubble : MonoBehaviour
         _gravity = UnityEngine.Random.Range(Config.Instance.GRAVITY_RANGE.Item1, Config.Instance.GRAVITY_RANGE.Item2);
         _size = UnityEngine.Random.Range(Config.Instance.SIZE_RANGE.Item1, Config.Instance.SIZE_RANGE.Item2);
         _bubbleId = Guid.NewGuid();
+        bubblePops = new List<AudioClip>();
     }
 
     void Start()
@@ -85,6 +86,11 @@ public class Bubble : MonoBehaviour
 
         CollideBubbles();
 
+    }
+
+    private void PlayRandomSound() {
+        int randomIndex = new Random().Next(0, bubblePops.Count);
+        // bubblePops[randomIndex].Play();
     }
     
     public void DestroyBubbleOnTap() {
@@ -158,6 +164,7 @@ public class Bubble : MonoBehaviour
     {
         if(IsDestroyed) return;
         IsDestroyed = true;
+        // PlayRandomSound();
         _feedbackPlayer.PlayFeedbacks();
         container.bubbles.Remove(this);
         Destroy(gameObject, destroyDelay);

@@ -335,7 +335,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      high-score-main-menu_0: -6934060504726509797
+      high-score-main-menu_1: 2626172133661615421
+      high-score-main-menu_2: 2507259892094055068
+      high-score-main-menu_3: 6485295618031335862
+      high-score-main-menu_4: 2917627059290975346
+      high-score-main-menu_5: -1151793998675582328
+      high-score-main-menu_6: -1005031997214717875
+      high-score-main-menu_7: 5763151178248512025
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
