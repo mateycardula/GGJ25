@@ -129,7 +129,7 @@ public class Container : MonoBehaviour
             b.DestroyBubble(0.3f);
         }
         
-        _scoreManager.IncreaseMultiplier();
+        _scoreManager.IncreaseMultiplier(UnityEngine.Color.yellow);
         
         PopAllCounter -=  1;
     }

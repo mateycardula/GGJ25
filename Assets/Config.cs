@@ -25,6 +25,7 @@ public class Config : MonoBehaviour
     public float LEVEL_TIMER = 30f;
     public int MAX_LEVELS = 3;
     public float POWERUP_LID_TIMER = 5f;
+    public float BASE_LIQUID_SPEED = 2f;
 
     public List<Level> LEVELS = new List<Level>();
     
@@ -59,7 +60,8 @@ public class Config : MonoBehaviour
                 mass = Instance.MASS.Item2,
                 level = 1,
                 spawnChance = Instance.SPAWN_CHANCE,
-                spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL
+                spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL,
+                liquidSpeed = Instance.BASE_LIQUID_SPEED
             };
         var level2 =
             new Level
@@ -67,7 +69,8 @@ public class Config : MonoBehaviour
                 mass = Instance.MASS.Item2 + 1,
                 level = 2,
                 spawnChance = Instance.SPAWN_CHANCE + 10,
-                spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL - 0.2f
+                spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL - 0.2f,
+                liquidSpeed = Instance.BASE_LIQUID_SPEED + 2f
             };
         var level3 =
             new Level
@@ -75,7 +78,8 @@ public class Config : MonoBehaviour
                 mass = Instance.MASS.Item2 + 2,
                 level = 3,
                 spawnChance = Instance.SPAWN_CHANCE + 20,
-                spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL - 0.35f
+                spawnInterval = Instance.SPAWN_ELAPSED_TIME_INTERVAL - 0.35f,
+                liquidSpeed = Instance.BASE_LIQUID_SPEED + 4f
             };
         
         LEVELS.Add(level1);
@@ -91,4 +95,6 @@ public class Level
     public float mass { get; set; }
     public float spawnChance { get; set; }
     public float spawnInterval { get; set; }
+    
+    public float liquidSpeed { get; set; }
 }

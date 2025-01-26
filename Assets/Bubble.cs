@@ -150,7 +150,7 @@ public class Bubble : MonoBehaviour
         {
             scoreManager.AddScore(collidingSameColorBubbles.Count * Config.Instance.SCORE_FOR_POPPED_ABOVE_HORIZON);
             container.DeleteBubbles(collidingSameColorBubbles);
-            scoreManager.IncreaseMultiplier();
+            scoreManager.IncreaseMultiplier(_color.BubbleColor);
         }  
     }
 

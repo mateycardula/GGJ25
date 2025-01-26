@@ -35,10 +35,11 @@ public class MultiplierLabel : MonoBehaviour
         }
     }
 
-    public void ShowMultiplier(float multiplier)
+    public void ShowMultiplier(float multiplier, Color32 textColor)
     {
         var text = "x" + multiplier.ToString("0.0");
         _multiplierLabel.text = text;
+        _multiplierLabel.color = textColor;
         var color = _multiplierLabel.color;
         color.a = 1;
         _multiplierLabel.color = color;

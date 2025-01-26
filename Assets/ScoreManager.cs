@@ -12,6 +12,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]
     private MultiplierLabel multiplierLabel;
     
+    [SerializeField]
+    private Renderer liquidRenderer;
+    
     public float multiplier;
     public Bubble bubble;
     public float multiplierTimer;
@@ -32,7 +35,8 @@ public class ScoreManager : MonoBehaviour
             {
                 levelSwitch.targetAngle += 90.0f;
             }
-            
+            liquidRenderer.material.SetFloat("_WaveSpeed", value.liquidSpeed);
+
             _level = value;
             _ovenUI.LevelDisplayCounter.text = _level.level.ToString();
         }
@@ -111,11 +115,11 @@ public class ScoreManager : MonoBehaviour
         Score += (int) Math.Round(points * multiplier);
     }
 
-    public void IncreaseMultiplier()
+    public void IncreaseMultiplier(Color32 popColor)
     {
         multiplierTimer = Config.Instance.MULTIPLIER_TIMER;
         multiplier *= Config.Instance.MULTIPLIER_INCREASE;
-        multiplierLabel.ShowMultiplier(multiplier);
+        multiplierLabel.ShowMultiplier(multiplier, popColor);
     }
     
 }
